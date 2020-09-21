@@ -1,0 +1,24 @@
+{
+  "name": "usermanagementsystem",
+  "version": "1.0.0",
+  "description": "Training project for Oost and Voort",
+  "main": "main.js",
+  "type": "module",
+  "dependencies": {
+    "vue": "^2.6.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelFrancisco/userManagementSystem.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/michaelFrancisco/userManagementSystem/issues"
+  },
+  "homepage": "https://github.com/michaelFrancisco/userManagementSystem#readme"
+}

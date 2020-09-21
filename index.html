@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A Web Page</title>
+    <link rel="stylesheet" href="style.css" />
+    <style></style>
+  </head>
+
+  <body>
+    <div id="root">
+      <div class="topnav"></div>
+
+      <div class="row">
+        <div class="column side">
+          <h2>Administration</h2>
+          <a href="#">Users</a>
+          <a href="#">Students</a>
+          <a href="#">Teachers</a>
+        </div>
+
+        <div class="column middle">
+          <div class="flex-row">
+            <p>Users</p>
+            <button @click="addUser">Add</button>
+          </div>
+          <div class="flex-row">
+            <p>Role</p>
+            <select v-model="selected">
+              <option selected value="All">All</option>
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+            </select>
+          </div>
+          <div>
+            <input type="text" v-model="userSearch" />
+          </div>
+          <div>
+            <ul>
+              <li
+                @click="loadValues(user.ID)"
+                :key="user.ID"
+                v-for="user in filteredUsers"
+                v-text="user.lastname + ', ' + user.firstname"
+              ></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="column side">
+          <div class="flex-row end">
+            <button @click="deleteUser">Delete</button>
+            <button @click="saveChanges">Save</button>
+          </div>
+          <div class="status-message">
+            <h2>{{ isActive }}</h2>
+          </div>
+          <div class="form">
+            <form>
+              <label for="firstname">First name</label><br />
+              <input
+                type="text"
+                id="firstname"
+                name="firstname"
+                v-model="firstname"
+              /><br />
+
+              <label for="lastname">Last name</label><br />
+              <input
+                type="text"
+                id="lastname"
+                name="lastname"
+                v-model="lastname"
+              /><br />
+
+              <label for="middlename">Middle name</label><br />
+              <input
+                type="text"
+                id="middlename"
+                name="middlename"
+                v-model="middlename"
+              /><br />
+
+              <label for="nickname">Nickname</label><br />
+              <input
+                type="text"
+                id="nickname"
+                name="nickname"
+                v-model="nickname"
+              /><br />
+
+              <label for="birthday">Birthday</label><br />
+              <input
+                type="date"
+                id="birthday"
+                name="birthday"
+                v-model="birthday"
+              /><br />
+
+              <label for="email">Email</label><br />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                v-model="email"
+              /><br />
+              <p>{{ isDuplicate }}</p>
+              <br />
+
+              <label for="role">Role</label><br />
+              <select v-model="role">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option></select
+              ><br />
+              <label for="active">Active</label><br />
+              <input
+                type="checkbox"
+                id="active"
+                v-model="active"
+                value="true"
+              />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
