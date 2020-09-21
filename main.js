@@ -96,6 +96,28 @@ var app = new Vue({
         active: true,
       },
     ],
+
+    roles: [
+      {
+        id: 1,
+        name: "Administrator",
+      },
+
+      {
+        id: 2,
+        name: "Teacher",
+      },
+
+      {
+        id: 3,
+        name: "Student",
+      },
+
+      {
+        id: 4,
+        name: "Participant",
+      },
+    ],
   },
 
   methods: {

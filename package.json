@@ -1,4 +1,5 @@
 {
+  "homepage": "https://michaelfrancisco.github.io/userManagementSystem/",
   "name": "usermanagementsystem",
   "version": "1.0.0",
   "description": "Training project for Oost and Voort",
@@ -7,7 +8,9 @@
   "dependencies": {
     "vue": "^2.6.12"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "vue-gh-pages": "^1.19.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +22,5 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/michaelFrancisco/userManagementSystem/issues"
-  },
-  "homepage": "https://github.com/michaelFrancisco/userManagementSystem#readme"
+  }
 }
