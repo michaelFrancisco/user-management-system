@@ -9,7 +9,6 @@
   <body>
     <div id="root">
       <div class="topnav"></div>
-
       <div class="row">
         <div class="column side">
           <h2>Administration</h2>
@@ -25,10 +24,11 @@
           </div>
           <div class="flex-row">
             <p>Role</p>
-            <select v-model="selected">
-              <option selected value="All">All</option>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
+
+            <select @change="changeRoleFilter" v-model="selected">
+              <option v-for="role in roles" v-bind:value="role.id">
+                {{ role.name }}
+              </option>
             </select>
           </div>
           <div>
@@ -49,6 +49,7 @@
         <div class="column side">
           <div class="flex-row end">
             <button @click="deleteUser">Delete</button>
+            <button @click="cancelChanges">Cancel</button>
             <button @click="saveChanges">Save</button>
           </div>
           <div class="status-message">
@@ -108,8 +109,9 @@
 
               <label for="role">Role</label><br />
               <select v-model="role">
-                <option value="student">Student</option>
-                <option value="teacher">Teacher</option></select
+                <option v-for="role in roles" v-bind:value="role.id">
+                  {{ role.name }}
+                </option></select
               ><br />
               <label for="active">Active</label><br />
               <input
@@ -123,8 +125,9 @@
         </div>
       </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="main.js"></script>
+    <script src="https://unpkg.com/vuex@3.5.1/dist/vuex.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

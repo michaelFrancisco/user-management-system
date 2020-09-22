@@ -1,11 +1,5 @@
-Vue.component("user", {
-  template: "<li><a href='#'><slot></slot></a></li>",
-});
-
-var app = new Vue({
-  el: "#root",
-
-  data: {
+var store = new Vuex.Store({
+  state: {
     lastname: "",
     firstname: "",
     middlename: "",
@@ -13,7 +7,7 @@ var app = new Vue({
     birthday: "",
     email: "",
     role: "",
-    selected: "All",
+    selected: 0,
     userSearch: "",
     active: false,
     selectedUser: -1,
@@ -26,8 +20,9 @@ var app = new Vue({
         nickname: "",
         birthday: "",
         email: "bjay@school.edu",
-        role: "teacher",
+        role_id: 2,
         active: false,
+        deleted: false,
       },
       {
         ID: 1,
@@ -37,8 +32,9 @@ var app = new Vue({
         nickname: "",
         birthday: "",
         email: "kim@school.edu",
-        role: "student",
+        role_id: 1,
         active: false,
+        deleted: false,
       },
       {
         ID: 2,
@@ -48,8 +44,9 @@ var app = new Vue({
         nickname: "",
         birthday: "",
         email: "lorenz@school.edu",
-        role: "teacher",
+        role_id: 2,
         active: true,
+        deleted: false,
       },
       {
         ID: 3,
@@ -59,8 +56,9 @@ var app = new Vue({
         nickname: "",
         birthday: "",
         email: "kim@school.edu",
-        role: "student",
+        role_id: 3,
         active: true,
+        deleted: false,
       },
       {
         ID: 4,
@@ -70,8 +68,9 @@ var app = new Vue({
         nickname: "",
         birthday: "",
         email: "erik@school.edu",
-        role: "teacher",
+        role_id: 4,
         active: false,
+        deleted: false,
       },
       {
         ID: 5,
@@ -81,8 +80,9 @@ var app = new Vue({
         nickname: "",
         birthday: "",
         email: "nicole@school.edu",
-        role: "student",
+        role_id: 2,
         active: false,
+        deleted: false,
       },
       {
         ID: 6,
@@ -92,94 +92,131 @@ var app = new Vue({
         nickname: "",
         birthday: "",
         email: "patricia@school.edu",
-        role: "teacher",
+        count: 0,
+        role_id: 1,
         active: true,
+        deleted: false,
       },
     ],
 
     roles: [
       {
         id: 1,
-        name: "Administrator",
+        name: "ADMINISTRATOR",
       },
 
       {
         id: 2,
-        name: "Teacher",
+        name: "TEACHER",
       },
 
       {
         id: 3,
-        name: "Student",
+        name: "STUDENT",
       },
 
       {
         id: 4,
-        name: "Participant",
+        name: "PARTICIPANT",
       },
     ],
   },
-
-  methods: {
-    loadValues(ID) {
-      this.firstname = this.users[ID].firstname;
-      this.lastname = this.users[ID].lastname;
-      this.middlename = this.users[ID].middlename;
-      this.nickname = this.users[ID].nickname;
-      this.birthday = this.users[ID].birthday;
-      this.email = this.users[ID].email;
-      this.role = this.users[ID].role;
-      this.active = this.users[ID].active;
-      this.selectedUser = ID;
+  mutations: {
+    SET_LASTNAME(state, lastname) {
+      state.users[state.selectedUser].lastname = lastname;
     },
-
-    deleteUser() {
-      let ID = this.selectedUser;
-      this.users.splice(ID, 1);
-      this.firstname = "";
-      this.lastname = "";
-      this.middlename = "";
-      this.nickname = "";
-      this.birthday = "";
-      this.email = "";
-      this.role = "";
-      this.active = false;
-      this.selectedUser = -1;
+    SET_FIRSTNAME(state, firstname) {
+      state.users[state.selectedUser].firstname = firstname;
     },
-
-    saveChanges() {
-      let ID = this.selectedUser;
-      this.users[ID].firstname = this.firstname;
-      this.users[ID].lastname = this.lastname;
-      this.users[ID].middlename = this.middlename;
-      this.users[ID].nickname = this.nickname;
-      this.users[ID].birthday = this.birthday;
-      this.users[ID].email = this.email;
-      this.users[ID].role = this.role;
-      this.users[ID].active = this.active;
+    SET_MIDDLENAME(state, middlename) {
+      state.users[state.selectedUser].middlename = middlename;
     },
-
-    addUser() {
-      this.users.push({
-        ID: this.users.length,
+    SET_NICKNAME(state, nickname) {
+      state.users[state.selectedUser].nickname = nickname;
+    },
+    SET_BIRTHDAY(state, birthday) {
+      state.users[state.selectedUser].birthday = birthday;
+    },
+    SET_EMAIL(state, email) {
+      state.users[state.selectedUser].email = email;
+    },
+    SET_ROLE(state, role) {
+      state.users[state.selectedUser].role_id = role;
+    },
+    SET_ACTIVE(state, active) {
+      state.users[state.selectedUser].active = active;
+    },
+    SET_SELECTED(state, selected) {
+      state.selected = selected;
+    },
+    SET_SELECTEDUSER(state, selectedUser) {
+      state.selectedUser = selectedUser;
+    },
+    DELETE_USER(state) {
+      state.users[state.selectedUser].deleted = true;
+    },
+    ADD_USER(state) {
+      state.users.push({
+        ID: state.users.length,
         lastname: "New User",
         firstname: "",
         middlename: "",
         nickname: "",
         birthday: "",
         email: "",
-        role: "",
+        role_id: state.selected,
         active: false,
       });
     },
   },
+  getters: {
+    filteredUsers: (state) => {
+      return state.users.filter(
+        (user) => user.role_id == state.selected && !user.deleted
+      );
+    },
+    isActive: (state) => (ID) => {
+      if (ID > -1) {
+        if (state.users[ID].active) return "This User is Active";
+        else return "This user is Inactive";
+      }
+    },
+  },
+});
 
+var app = new Vue({
+  el: "#root",
+  store: store,
+  data: {
+    selected: "All",
+    lastname: "",
+    firstname: "",
+    middlename: "",
+    nickname: "",
+    birthday: "",
+    email: "",
+    role: "",
+    selected: "All",
+    userSearch: "",
+    active: false,
+    selectedUser: -1,
+  },
   computed: {
+    roles() {
+      return this.$store.state.roles;
+    },
+    filteredUsers() {
+      return this.$store.getters.filteredUsers;
+    },
+    isActive() {
+      return this.$store.getters.isActive(this.selectedUser);
+    },
     isDuplicate() {
       if (this.selectedUser > 0) {
-        let count = 0;
-        for (i = 0; i < this.users.length; i++) {
-          if (this.email == this.users[i].email) {
+        var count = 0;
+        var i;
+        for (i = 0; i < this.$store.state.users.length; i++) {
+          if (this.email == this.$store.state.users[i].email) {
             count++;
           }
         }
@@ -192,26 +229,65 @@ var app = new Vue({
         return "";
       }
     },
-
-    isActive() {
-      if (this.selectedUser < 0) {
-        return "";
-      } else {
-        let ID = this.selectedUser;
-        if (this.users[ID].active == false) {
-          return "This user account is inactive";
-        }
-      }
+  },
+  methods: {
+    changeRoleFilter() {
+      store.commit("SET_SELECTED", this.selected);
+    },
+    loadValues(ID) {
+      this.selectedUser = ID;
+      this.firstname = this.$store.state.users[ID].firstname;
+      this.lastname = this.$store.state.users[ID].lastname;
+      this.nickname = this.$store.state.users[ID].nickname;
+      this.birthday = this.$store.state.users[ID].birthday;
+      this.email = this.$store.state.users[ID].email;
+      this.role =
+        this.$store.state.roles[this.$store.state.users[ID].role_id].id - 1;
+      this.active = this.$store.state.users[ID].active;
+      store.commit("SET_SELECTEDUSER", this.selectedUser);
     },
 
-    filteredUsers() {
-      if (this.selected == "student") {
-        return this.users.filter((user) => user.role == "student");
-      } else if (this.selected == "teacher") {
-        return this.users.filter((user) => user.role == "teacher");
-      } else {
-        return this.users;
-      }
+    deleteUser() {
+      let ID = this.selectedUser;
+      store.commit("DELETE_USER");
+      this.firstname = "";
+      this.lastname = "";
+      this.middlename = "";
+      this.nickname = "";
+      this.birthday = "";
+      this.email = "";
+      this.role = "";
+      this.active = false;
+      this.selectedUser = -1;
+      store.commit("SET_SELECTEDUSER", -1);
+    },
+
+    cancelChanges() {
+      var ID = this.selectedUser;
+      this.firstname = this.$store.state.users[ID].firstname;
+      this.lastname = this.$store.state.users[ID].lastname;
+      this.middlename = this.$store.state.users[ID].middlename;
+      this.nickname = this.$store.state.users[ID].nickname;
+      this.birthday = this.$store.state.users[ID].birthday;
+      this.email = this.$store.state.users[ID].email;
+      this.role = this.$store.state.users[ID].role;
+      this.active = this.$store.state.users[ID].active;
+    },
+
+    saveChanges() {
+      let ID = this.selectedUser;
+      store.commit("SET_FIRSTNAME", this.firstname);
+      store.commit("SET_LASTNAME", this.lastname);
+      store.commit("SET_MIDDLENAME", this.middlename);
+      store.commit("SET_NICKNAME", this.nickname);
+      store.commit("SET_BIRTHDAY", this.birthday);
+      store.commit("SET_EMAIL", this.email);
+      store.commit("SET_ROLE", this.role);
+      store.commit("SET_ACTIVE", this.active);
+    },
+
+    addUser() {
+      store.commit("ADD_USER");
     },
   },
 });
